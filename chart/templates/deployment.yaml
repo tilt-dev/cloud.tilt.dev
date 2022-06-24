@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snapshot-frontend
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: snapshot-frontend
+spec:
+  replicas: {{ .Values.numReplicas }}
+  selector:
+    matchLabels:
+      app: snapshot-frontend
+  template:
+    metadata:
+      labels:
+        app: snapshot-frontend
+    spec:
+      containers:
+      - name: snapshot-frontend
+        image: {{ .Values.imageName }}
+        ports:
+        - containerPort: 10450
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 10450
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          requests:
+            cpu: 10m

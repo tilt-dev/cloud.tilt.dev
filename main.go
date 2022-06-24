@@ -46,8 +46,8 @@ func NewRouter() *Router {
 func main() {
 	http.Handle("/", NewRouter())
 
-	log.Println("Serving on port 8000")
-	err := http.ListenAndServe(":8000", nil)
+	log.Println("Serving on port 10450")
+	err := http.ListenAndServe(":10450", nil)
 	if err != nil {
 		log.Fatalf("Server exited with: %v", err)
 	}
