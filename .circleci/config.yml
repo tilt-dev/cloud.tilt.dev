@@ -1,0 +1,45 @@
+version: 2.1
+orbs:
+  slack: circleci/slack@3.3.0
+  gcp-cli: circleci/gcp-cli@1.8.3
+  kubernetes: circleci/kubernetes@0.9.1
+jobs:
+  test:
+    docker:
+      - image: cimg/go:1.18
+    steps:
+      - checkout
+      - run: go get -v ./...
+      - run: go vet .
+      - run: go install .
+      
+  deploy:
+    docker:
+      - image: cimg/go:1.18
+    steps:
+      - setup_remote_docker
+      - checkout
+      - gcp-cli/install
+      - gcp-cli/initialize
+      - kubernetes/install-kubectl
+      - run:
+          name: Setup Kubernetes
+          command: gcloud container clusters get-credentials windmill
+      - run:
+          name: Setup Docker Credentials
+          command: gcloud auth configure-docker
+      - run: ./deploy.sh
+      - slack/status
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
+  deploy:
+    jobs:
+      - deploy:
+          context: Tilt Deploy Context
+          filters:
+            branches:
+              only: deploy
