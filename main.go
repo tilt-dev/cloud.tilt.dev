@@ -27,6 +27,10 @@ func NewRouter() *Router {
 
 	fs := http.FileServer(http.FS(webContent))
 	r.Handle("/", fs)
+	r.Handle("/healthz", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("OK\n"))
+	}))
 	r.Handle("/index.html", fs)
 	r.Handle("/favicon.ico", fs)
 	r.Handle("/main.css", fs)
