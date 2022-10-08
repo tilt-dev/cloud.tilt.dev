@@ -1,14 +1,14 @@
 version: 2.1
 orbs:
   slack: circleci/slack@3.3.0
-  gcp-cli: circleci/gcp-cli@1.8.3
+  gcp-cli: circleci/gcp-cli@2.4.1
   kubernetes: circleci/kubernetes@0.9.1
   helm: circleci/helm@2.0.1
   go: circleci/go@1.7.1
 jobs:
   test:
     docker:
-      - image: cimg/go:1.18
+      - image: cimg/go:1.19
     steps:
       - checkout
       - run: go get -v ./...
@@ -36,7 +36,7 @@ jobs:
       
   deploy:
     docker:
-      - image: cimg/go:1.18
+      - image: cimg/go:1.19
     steps:
       - setup_remote_docker:
           version: 20.10.11
