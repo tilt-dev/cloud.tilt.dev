@@ -8,7 +8,7 @@ orbs:
 jobs:
   test:
     docker:
-      - image: cimg/go:1.19
+      - image: cimg/go:1.18.6
     steps:
       - checkout
       - run: go get -v ./...
@@ -36,7 +36,7 @@ jobs:
       
   deploy:
     docker:
-      - image: cimg/python:3.9
+      - image: cimg/go:1.18.6
     steps:
       - setup_remote_docker:
           version: 20.10.11
