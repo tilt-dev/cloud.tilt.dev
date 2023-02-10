@@ -43,6 +43,7 @@ jobs:
       - checkout
       - gcp-cli/setup:
           version: 414.0.0
+          components: gke-gcloud-auth-plugin
       - kubernetes/install-kubectl
       - helm/install-helm-client
       - run:
