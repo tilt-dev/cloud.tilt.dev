@@ -1,0 +1,24 @@
+name: Release New Version
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::710015040892:role/CloudTiltDevS3-20230912140723264900000002
+          aws-region: us-east-1
+
+      - run: |
+          aws s3 cp --content-type="application/json" --acl=public-read ./web/api/whoami s3://cloud-tilt-dev20230901133309169500000001/api/whoami
